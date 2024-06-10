@@ -7,8 +7,7 @@ import tkinter
 def receive():
     while True:
         try:
-            data = CLIENT_SOCKET.recv(SIZE_BUFFER)
-            messaggio = data.decode('utf-8')
+            messaggio = CLIENT_SOCKET.recv(SIZE_BUFFER).decode('utf-8')
             msg_list.insert(tkinter.END, messaggio)
         except OSError:
             break
@@ -18,16 +17,16 @@ def send(event=None):
     input.set('')  #svuoto il campo di input sulla GUI
     CLIENT_SOCKET.send(messaggio.encode('utf-8'))
     if messaggio == '{quit}':
-        exit()
+        close_connection()
 
-def exit(event=None):
+def close_connection(event=None):
     exit_message = '{quit}'
     CLIENT_SOCKET.send(exit_message.encode('utf-8'))
     CLIENT_SOCKET.close()
     finestra.quit()
 
 def on_closing(event=None):
-    exit()
+    close_connection()
 
 finestra = tkinter.Tk()
 frame_messaggi = tkinter.Frame(finestra)
@@ -47,10 +46,10 @@ input_field.pack()
 send_button = tkinter.Button(finestra, text="Invio", command=send)
 send_button.pack()
 
-exit_button = tkinter.Button(finestra, text="Esci", command=exit)
+exit_button = tkinter.Button(finestra, text="Esci", command=close_connection)
 exit_button.pack()
 
-finestra.protocol('VM_DELETE_WINDOW', on_closing)
+finestra.protocol('WM_DELETE_WINDOW', on_closing)
 
 #diciamo a quale indirizzo e porta vogliamo connetterci
 HOST = '127.0.0.1'
