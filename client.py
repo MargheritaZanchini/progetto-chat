@@ -9,6 +9,7 @@ def receive():
         try:
             messaggio = CLIENT_SOCKET.recv(SIZE_BUFFER).decode('utf-8')
             msg_list.insert(tkinter.END, messaggio)
+            msg_list.see(tkinter.END)
         except OSError:
             break
 
@@ -29,11 +30,14 @@ def on_closing(event=None):
     close_connection()
 
 finestra = tkinter.Tk()
+finestra.title("chat client-server")
+finestra.configure(background="#E6E6FA")
+
 frame_messaggi = tkinter.Frame(finestra)
 input = tkinter.StringVar() #qui verranno messi i messaggi da inviare
 scrollbar = tkinter.Scrollbar(frame_messaggi) #per vedere anche i messaggi precedenti
 
-msg_list = tkinter.Listbox(frame_messaggi, height=15, width=50, yscrollcommand=scrollbar.set)
+msg_list = tkinter.Listbox(frame_messaggi, height=15, width=50, yscrollcommand=scrollbar.set, bg="pink")
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
 msg_list.pack()
