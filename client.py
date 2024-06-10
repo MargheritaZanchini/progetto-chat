@@ -16,18 +16,16 @@ def receive():
 def send(event=None):
     messaggio = input.get() #prendo dal campo di input sulla GUI il messaggio
     input.set('')  #svuoto il campo di input sulla GUI
-    CLIENT_SOCKET.send(messaggio.encode('utf-8'))
     if messaggio == '{quit}':
         close_connection()
+    else:
+        CLIENT_SOCKET.send(messaggio.encode('utf-8'))
 
 def close_connection(event=None):
     exit_message = '{quit}'
     CLIENT_SOCKET.send(exit_message.encode('utf-8'))
     CLIENT_SOCKET.close()
     finestra.quit()
-
-def on_closing(event=None):
-    close_connection()
 
 finestra = tkinter.Tk()
 finestra.title("chat client-server")
@@ -53,7 +51,7 @@ send_button.pack()
 exit_button = tkinter.Button(finestra, text="Esci", command=close_connection)
 exit_button.pack()
 
-finestra.protocol('WM_DELETE_WINDOW', on_closing)
+finestra.protocol('WM_DELETE_WINDOW', close_connection)
 
 #diciamo a quale indirizzo e porta vogliamo connetterci
 HOST = '127.0.0.1'
