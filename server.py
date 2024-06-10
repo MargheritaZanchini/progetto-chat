@@ -40,6 +40,7 @@ def gestione_client(client_socket):
                 break
         except Exception as e:
             print("Si è verificato un errore nel riceve/inviare messaggi dai/ai client. Errore: "+e)
+            break
         
 
 def broadcast(messaggio, nome):
@@ -64,8 +65,8 @@ SERVER_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 SERVER_SOCKET.bind(ADDR) #in questo modo leghiamo il socket all'indirizzo e alla porta specificati
 
 if __name__ == "__main__":
-    SERVER_SOCKET.listen(5)
-    print("In attesa di connessioni...")
+    SERVER_SOCKET.listen(4) #numero massimo di connessioni in coda
+    print("Attendendo i client...")
     ACCEPT_THREAD = threading.Thread(target=accetta_connessioni)
     ACCEPT_THREAD.start()
     ACCEPT_THREAD.join()
